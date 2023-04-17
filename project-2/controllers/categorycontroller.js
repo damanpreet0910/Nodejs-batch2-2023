@@ -1,10 +1,39 @@
+const Category = require('../models/categorymodel')
+
 function addcategory(req,res){
-    res.json({
-        'status':200,
-        'success':true,
-        'msg':'Category inserted',
-        'data':req.body
-    })
+
+    var validation = ""
+    if(req.body.category_name == "")
+    {
+        validation += "Category name is required \n"
+    }
+    if(req.body.description == "")
+    {
+        validation += "Description is required"
+    }
+
+    if(!!validation)
+    {
+        res.json({
+            status:409,
+            success:false,
+            msg:validation
+        })
+    }
+    else{
+
+        let categoryobject = new Category()
+        categoryobject.category_name = req.body.category_name
+        categoryobject.description = req.body.description
+        categoryobject.save()
+        res.json({
+            'status':200,
+            'success':true,
+            'msg':'Category inserted',
+            'data':req.body
+        })
+    }
+    
 }
 
 getallcategory = (req,res)=>{
