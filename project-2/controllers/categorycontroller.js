@@ -37,31 +37,65 @@ function addcategory(req,res){
 }
 
 getallcategory = (req,res)=>{
-    category_array = [
-        {
-            'category_name':'category 1',
-            'description' : 'Demo description'
-        },
-        {
-            'category_name':'category 2',
-            'description' : 'Demo description 2'
-        },
-        {
-            'category_name':'category 3',
-            'description' : 'Demo description 3'
-        }
-
-    ]
-    res.json({
-        'status':200,
-        'success':true,
-        'msg':'Category inserted',
-        'data':category_array
+    Category.find(req.body).exec()
+    .then(categorydata=>{
+        res.json({
+            'status':200,
+            'success':true,
+            'msg':'data loaded',
+            'data':categorydata
+        })
     })
+    .catch(err=>{
+        res.json({
+            status:500,
+            success:false,
+            msg : 'Error Occur',
+            error : String(err)
+        })
+    })
+    
+}
+
+getsingle = (req,res)=>{
+    var validate = ""
+    if(req.body._id == "")
+    {
+        validate += "_id is required"
+    }
+
+    if(!!validate)
+    {
+        res.json({
+            status:409,
+            success:false,
+            msg:validate
+        })
+    }
+    else{
+        Category.findOne({_id:req.body._id})
+        .then(categorydata=>{
+            res.json({
+                'status':200,
+                'success':true,
+                'msg':'data loaded',
+                'data':categorydata
+            })
+        })
+        .catch(err=>{
+            res.json({
+                status:500,
+                success:false,
+                msg : 'Error Occur',
+                error : String(err)
+            })
+        })
+    }
 }
 
 
 module.exports = {
     addcategory,
-    getallcategory
+    getallcategory,
+    getsingle
 }

@@ -4,6 +4,6 @@ const categorycontroller = require('../controllers/categorycontroller')
 
 router.post("/addcategory",categorycontroller.addcategory)
 router.post("/getallcategory",categorycontroller.getallcategory)
-
+router.post("/getsinglecategory",categorycontroller.getsingle)
 
 module.exports = router
