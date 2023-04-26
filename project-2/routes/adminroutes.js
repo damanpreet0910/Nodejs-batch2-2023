@@ -7,6 +7,8 @@ const ordercontroller = require('../controllers/orderController')
 router.post("/addcategory",categorycontroller.addcategory)
 router.post("/getallcategory",categorycontroller.getallcategory)
 router.post("/getsinglecategory",categorycontroller.getsingle)
+router.post("/updatecategory",categorycontroller.update)
+router.post("/deletecategory",categorycontroller.deletedata)
 
 
 router.post("/addbrand",brandcontroller.addbrand)
