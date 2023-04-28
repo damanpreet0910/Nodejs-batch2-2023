@@ -3,6 +3,7 @@ const router = require('express').Router()
 const categorycontroller = require('../controllers/categorycontroller')
 const brandcontroller = require('../controllers/brandcontroller')
 const ordercontroller = require('../controllers/orderController')
+const usercontroller = require('../controllers/usercontroller')
 
 //category routes start
 router.post("/addcategory",categorycontroller.addcategory)
@@ -20,5 +21,8 @@ router.post("/enabledisablebrand",brandcontroller.enabledisablebrand)
 
 router.post("/placeorder",ordercontroller.add)
 router.post("/getallorder",ordercontroller.getall)
+
+
+router.post("/register",usercontroller.register)
 
 module.exports = router
