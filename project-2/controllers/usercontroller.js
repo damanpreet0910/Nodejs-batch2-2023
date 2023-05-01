@@ -60,6 +60,75 @@ register = (req,res)=>{
     }
 }
 
+changepassword = (req,res)=>{
+    validator = ""
+    if(req.body.oldpassword == "")
+        validator += "Old password is required"
+    if(req.body.newpassword == "")
+        validator += "New password is required"
+    if(req.body.confirmpassword == "")
+        validator += "Confirm password is required"
+    if(req.body.userId == "")
+        validator += "User Id  is required"
+
+    if(!!validator)
+    {
+        res.json({
+            status: 409,
+            success:false,
+            msg:validator
+        })
+    }
+    else{
+        //compare new password with confirm password
+        if(req.body.newpassword == req.body.confirmpassword)
+        {
+            //check user existance
+            User.findOne({_id:req.body.userId})
+            .then(userdata=>{
+                if(userdata != null)
+                {
+                    //compare old password with database password
+                    bcrypt.compare(req.body.oldpassword,userdata,(data,err)=>{
+                        if(data)
+                        {
+                            //update code
+                            userdata.password = req.body.newpassword
+                            userdata.save()
+                            res.json({
+                                status:200,
+                                success:true,
+                                msg:'password updated' 
+                            })   
+                        }
+                        else{
+                            res.json({
+                                status:409,
+                                success:false,
+                                msg:'old password do not matched' 
+                            })
+                        }
+                    })
+                }
+                else{
+                    res.json({
+                        status:409,
+                        success:false,
+                        msg:'User does not exists' 
+                    })
+                }
+            })
+        }
+        else{
+            res.json({
+                status:409,
+                success:false,
+                msg:'new password and confirm password do not match'
+            })
+        }
+    }
+}
 module.exports = {
-    register
+    register,
+    changepassword
 }

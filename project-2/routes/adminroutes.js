@@ -4,6 +4,9 @@ const categorycontroller = require('../controllers/categorycontroller')
 const brandcontroller = require('../controllers/brandcontroller')
 const ordercontroller = require('../controllers/orderController')
 const usercontroller = require('../controllers/usercontroller')
+const dashboardcontroller = require('../controllers/dashboardcontroller')
+
+router.post("/dashboard",dashboardcontroller.dashboard)
 
 //category routes start
 router.post("/addcategory",categorycontroller.addcategory)
@@ -24,5 +27,6 @@ router.post("/getallorder",ordercontroller.getall)
 
 
 router.post("/register",usercontroller.register)
+router.post("/changepassword",usercontroller.changepassword)
 
 module.exports = router
