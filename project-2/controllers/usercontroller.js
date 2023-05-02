@@ -2,6 +2,8 @@ const User = require('../models/usermodel')
 const Customer = require('../models/customermodel')
 const bcrypt = require('bcrypt')
 const saltround = 10
+const jwt = require('jsonwebtoken')
+const secretkey = "Project123#@"
 
 register = (req,res)=>{
     var validator = ""
@@ -128,7 +130,64 @@ changepassword = (req,res)=>{
         }
     }
 }
+
+login = (req,res)=>{
+    validator = ""
+    if(req.body.email == "")
+        validator += "Email is required"
+    if(req.body.password == "")
+        validator += "password is required"
+  
+    if(!!validator)
+    {
+        res.json({
+            status: 409,
+            success:false,
+            msg:validator
+        })
+    }
+    else{
+        //check existance of email
+        User.findOne({email:req.body.email})
+        .then(userdata=>{
+            if(userdata == null)
+            {
+                res.json({
+                    status:404,
+                    success:false,
+                    msg:'User not found'
+                })
+            }
+            else{
+                //compare password with user password
+                bcrypt.compare(req.body.password,userdata.password,(err,data)=>{
+                    if(err){
+                        res.json({
+                            status:409,success:false,msg:'Invalid password'
+                        })
+                    }
+                    else{
+                        payload = {
+                            _id : userdata._id,
+                            name : userdata.name,
+                            email : userdata.email,
+                            userType : userdata.userType,
+                        }
+                        token = jwt.sign(payload,secretkey,{
+                            expiresIn:60*30
+                        })
+                        res.json({
+                            status:200,success:true,msg:'login successfully',data:userdata,token:token
+                        })
+                    }
+                })
+            }
+        })
+    }
+}
+
 module.exports = {
     register,
-    changepassword
+    changepassword,
+    login
 }

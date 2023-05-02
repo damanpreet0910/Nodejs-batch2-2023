@@ -6,7 +6,14 @@ const ordercontroller = require('../controllers/orderController')
 const usercontroller = require('../controllers/usercontroller')
 const dashboardcontroller = require('../controllers/dashboardcontroller')
 
+router.post("/register",usercontroller.register)
+router.post("/login",usercontroller.login)
+
+
+router.use(require('../config/middleware'))
+
 router.post("/dashboard",dashboardcontroller.dashboard)
+router.post("/changepassword",usercontroller.changepassword)
 
 //category routes start
 router.post("/addcategory",categorycontroller.addcategory)
@@ -26,7 +33,5 @@ router.post("/placeorder",ordercontroller.add)
 router.post("/getallorder",ordercontroller.getall)
 
 
-router.post("/register",usercontroller.register)
-router.post("/changepassword",usercontroller.changepassword)
 
 module.exports = router
