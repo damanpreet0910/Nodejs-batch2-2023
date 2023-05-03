@@ -9,6 +9,9 @@ app.use(express.urlencoded({extended:true}))
 const adminroutes = require('./routes/adminroutes')
 app.use("/admin",adminroutes)
 
+const seeder = require('./config/seeder')
+seeder.adminseeder()
+
 app.listen(port,()=>{
     console.log("server runningat port "+port)
 })
