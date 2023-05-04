@@ -1,6 +1,8 @@
 const Brand = require('../models/brandmodel')
 
 addbrand = (req,res)=>{
+    console.log(req.body)
+    console.log(req.file)
     var validate = ""
     if(req.body.brand_name == "")
     {
@@ -32,6 +34,10 @@ addbrand = (req,res)=>{
                 let brandobject = new Brand()
                 brandobject.brand_name = req.body.brand_name
                 brandobject.description = req.body.description
+                if(req.file)
+                {
+                    brandobject.brand_logo = "brand/"+req.file.filename
+                }
                 brandobject.save()
                 res.json({
                     success:true,
@@ -64,8 +70,8 @@ getallbrand = (req,res)=>{
 
     Brand.find()
     // .sort({_id:-1})
-    .skip(skip_count)
-    .limit(limit_num)
+    // .skip(skip_count)
+    // .limit(limit_num)
     .exec()
     .then(branddata=>{
         res.json({

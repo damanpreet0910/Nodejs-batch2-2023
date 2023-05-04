@@ -91,7 +91,7 @@ changepassword = (req,res)=>{
                 if(userdata != null)
                 {
                     //compare old password with database password
-                    bcrypt.compare(req.body.oldpassword,userdata,(data,err)=>{
+                    bcrypt.compare(req.body.oldpassword,userdata,(err,data)=>{
                         if(data)
                         {
                             //update code
